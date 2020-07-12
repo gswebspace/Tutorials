@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  
+  <link rel="shortcut icon" href="./img/favicon.ico">
+  <title>Home - LEAN + Docker</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="./css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Home";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = "/";
+  </script>
+  
+  <script src="./js/jquery-2.1.1.min.js"></script>
+  <script src="./js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="./js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> LEAN + Docker</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href=".">Home</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#backtesting-with-quantconnect-lean-engine-and-docker">Backtesting with QuantConnect LEAN Engine and Docker</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#introduction">Introduction</a></li>
+        
+            <li><a class="toctree-l3" href="#requirements">Requirements</a></li>
+        
+            <li><a class="toctree-l3" href="#tutorial">Tutorial</a></li>
+        
+            <li><a class="toctree-l3" href="#helpful-commands">Helpful commands</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">LEAN + Docker</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Home</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="backtesting-with-quantconnect-lean-engine-and-docker">Backtesting with QuantConnect LEAN Engine and Docker</h1>
+<h2 id="introduction">Introduction</h2>
+<p><a href="https://www.docker.com/resources/what-container">Docker containers</a> are useful to minimize setup times and deployments as an application and its dependencies are packaged into one <strong>docker image</strong>. These docker images can be run as a <strong>docker container</strong> on your machine in an isolated environment. </p>
+<p>QuantConnect LEAN Engine and docker can be used to easily setup a development environment without worrying about installing any required packages and dependencies.</p>
+<p>This tutorial starts from scratch on a development host and teaches you how to perform backtesting using LEAN easily.</p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>A development machine<ul>
+<li>Supported processor architectures : AMD64/X64 with <a href="http://en.wikipedia.org/wiki/Second_Level_Address_Translation">SLAT</a></li>
+<li>Supported OS : Linux, Windows and macOS</li>
+<li>4 GB RAM or more</li>
+<li>BIOS-level hardware <a href="https://docs.docker.com/docker-for-windows/troubleshoot/#virtualization-must-be-enabled">virtualization</a> support enabled</li>
+<li>20GB+ Free space</li>
+</ul>
+</li>
+</ul>
+<h2 id="tutorial">Tutorial</h2>
+<p>To proceed with the tutorial follow the steps below</p>
+<ul>
+<li>
+<p>Install <em>Docker</em> on your host using the instructions provided <a href="https://docs.docker.com/get-docker/">here</a>. To verify the installation run <code>docker ps</code> or <code>docker info</code> in a terminal. The command should execute without errors.</p>
+<ul>
+<li>For linux users, you can use docker as a non-root user by adding your user to the <em>docker</em> group by executing <code>sudo usermod -aG docker $USER</code>. You will need to reboot to start using docker as your user.</li>
+</ul>
+<p><video width="320" title="Docker installation" controls>
+  <source src="img/lean-docker-install.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video></p>
+</li>
+<li>
+<p>Create a new development directory.</p>
+</li>
+<li>
+<p>In the development directory create a new file called <code>Dockerfile</code> with the following contents</p>
+</li>
+</ul>
+<pre><code># Base image used is Ubuntu
+FROM ubuntu:18.04
+
+# apt update and install useful packages
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update &amp;&amp; apt-get install -y \
+    curl git apt-transport-https nano 
+
+# Install Mono + nuget
+RUN apt install -y gnupg ca-certificates &amp;&amp; apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF &amp;&amp; echo &quot;deb https://download.mono-project.com/repo/ubuntu stable-bionic main&quot; | tee /etc/apt/sources.list.d/mono-official-stable.list
+RUN apt-get update &amp;&amp; apt install -y binutils mono-complete ca-certificates-mono mono-vbnc nuget referenceassemblies-pcl fsharp
+
+# Install python and dependencies
+RUN apt-get install -y build-essential python3.6 python3-pip  python3-dev
+RUN pip3 install cython==0.29.11 pandas==0.25.3 wrapt==1.11.2
+
+# Setup a build and run script
+RUN bash -c 'echo -e &quot;cd /Lean\nnuget restore QuantConnect.Lean.sln\nmsbuild QuantConnect.Lean.sln\ncd /Lean/Launcher/bin/Debug\nmono QuantConnect.Lean.Launcher.exe\ncd /Lean&quot;' &gt; /usr/local/bin/lean-build-run &amp;&amp; chmod u+x /usr/local/bin/lean-build-run
+
+# Clone the LEAN repo
+RUN git clone --branch 8772 --depth 1 https://github.com/QuantConnect/Lean.git
+
+# Open a new shell for the user
+CMD [&quot;/bin/bash&quot;]
+
+</code></pre>
+
+<ul>
+<li>
+<p>Open a command prompt/terminal on your host and navigate to the development directory.</p>
+</li>
+<li>
+<p>Prepare your LEAN environment <strong>docker image</strong> using the following command</p>
+<p><code>docker build -t lean-env .</code></p>
+</li>
+<li>
+<p>To confirm if the image has been created run <code>docker images</code> and you will see an image called <em>lean-env</em>.</p>
+</li>
+<li>
+<p>Create a docker container from the newly created <em>lean-env</em> image</p>
+<p><code>docker run -it --name lean-env lean-env</code></p>
+<p><video width="320" title="LEAN container setup" controls>
+  <source src="img/lean-container-setup.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video></p>
+</li>
+<li>
+<p>Install VS Code to use it for development</p>
+<ul>
+<li>
+<p>Install VS Code from instructions <a href="https://code.visualstudio.com/docs/setup/setup-overview">provided here</a></p>
+<p><video width="320" title="Installing VS Code" controls>
+  <source src="img/lean-vscode-install.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video></p>
+</li>
+<li>
+<p>Setup VS Code and extensions</p>
+<ul>
+<li>
+<p>Run VS Code and install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">Remote Development</a> extension pack </p>
+</li>
+<li>
+<p>Connect VS Code to the docker container by opening a <em>Remote Window</em> from the bottom left of the editor and choose "Attach to running container".</p>
+</li>
+<li>
+<p>Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp">C# extension</a></p>
+</li>
+<li>
+<p>Install the <a href="https://marketplace.visualstudio.com/items?itemName=lucasazzola.vscode-csproj">VS Code .csproj extension</a>. Go into File &gt; Prefererences &gt; Settings &gt; Extensions &gt; csproj configuration  &gt; Item Type &gt; Edit in settings.json and add the following -</p>
+<p><code>"csproj.itemType": {
+    ".cs" : "Compile"
+}</code></p>
+</li>
+<li>
+<p>Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug">Mono Debug extension</a>.</p>
+</li>
+<li>
+<p>Open <em>/LEAN</em> folder in VS Code.</p>
+</li>
+<li>
+<p>Create a new Run/Debug configuration by selecting Run &gt; Create a launch.json file and add the following object in the  <em>configurations</em> key -</p>
+<p><code>{
+  "name": "LEAN",
+  "type": "mono",
+  "request": "launch",
+  "program": "/Lean/Launcher/bin/Debug/QuantConnect.Lean.Launcher.exe",
+  "cwd": "/Lean/Launcher/bin/Debug"
+}</code></p>
+</li>
+<li>
+<p>Create a task to build the project from VS Code by pressing ctrl+shift+p and selecting Tasks: Configure Task &gt; Open tasks.json file &gt; Others. Add the following to <em>tasks</em> -</p>
+<p><code>{
+  "label": "LEAN Build",
+  "type": "shell",
+  "command": "nuget restore QuantConnect.Lean.sln &amp;&amp; msbuild QuantConnect.Lean.sln",
+  "options": {
+      "cwd": "/Lean"
+  },
+  "problemMatcher": [],
+  "group": {
+      "kind": "build",
+      "isDefault": true
+  }
+}</code></p>
+</li>
+<li>
+<p>Build the project by pressing <code>ctrl+shift+b</code> or by running <code>ctrl+shift+p</code> &gt; <em>Tasks: Run Task</em> &gt; LEAN Build.</p>
+</li>
+<li>
+<p>Goto the Run view and select <em>LEAN</em> and hit the play icon to start/debug the program.</p>
+</li>
+</ul>
+<p><video width="320" title="VS Code Setup" controls>
+    <source src="img/lean-vscode-setup.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Create and add your Backtesting algorithm</p>
+<ul>
+<li>
+<p>Add a new file for your algo under <code>Algorithm.Csharp</code> and name it <code>MyAlgo.cs</code>.</p>
+</li>
+<li>
+<p>The <em>VS Code .csproj extension</em> will ask you to add the file to the project, click Yes.</p>
+</li>
+<li>
+<p>Add the following code to the file (or your own custom implementation) </p>
+<pre><code>using QuantConnect.Data.Market;
+
+namespace QuantConnect.Algorithm.CSharp
+{
+
+    public class MyAlgo : QCAlgorithm
+    {
+        decimal myprice = 0;
+
+        private readonly Symbol _ibm = QuantConnect.Symbol.Create("IBM", SecurityType.Equity, Market.USA);
+
+        public override void Initialize()
+        {
+            SetStartDate(2013, 01, 01);  //Set Start Date for backtesting
+            SetEndDate(2014, 01, 01);    //Set End Date for backtesting
+            SetCash(100000);
+
+            AddSecurity(SecurityType.Equity, "IBM", Resolution.Hour);
+            Securities[_ibm].SetLeverage(1.0m);
+        }
+
+        public void OnData(TradeBars data)
+        {
+            if (!data.ContainsKey(_ibm)) return;
+
+            if(!Portfolio.Invested){
+                SetHoldings(_ibm, 1.0m);
+                myprice = data[_ibm].Value;
+            } else {
+                if(data[_ibm].Value &gt;  (myprice*1.05m)){
+                    SetHoldings(_ibm, 0.5m);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>Modify the <em>Launcher/config.json</em> file -</p>
+<ul>
+<li>
+<p>Change <em>algorithm-type-name</em> to <code>MyAlgo</code>.</p>
+</li>
+<li>
+<p>Make sure that <em>algorithm-language</em> is set to <code>CSharp</code></p>
+</li>
+<li>
+<p>If your data is kept in a different directory modify <em>data-folder</em> to the appropriate path. For more info see  <a href="https://www.quantconnect.com/docs/algorithm-reference/importing-custom-data#Importing-Custom-Data">Importing Custom Data</a>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Build the program by pressing <code>ctrl+shift+b</code>. The build command output is available via the TERMINAL for the LEAN Build task.</p>
+</li>
+<li>
+<p>Run to program by selecting Run &gt; LEAN</p>
+</li>
+<li>
+<p>In the <em>DEBUG CONSOLE</em> you can see the output of the program including various statistics like Total Trades, Average Win, Net Profit etc.</p>
+<p><video width="320" title="Adding new backtesting algorithm" controls>
+                <source src="img/lean-my-algo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+        </video></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="helpful-commands">Helpful commands</h2>
+<ul>
+<li>Restore nuget packages by executing the following inside your container</li>
+</ul>
+<pre><code>cd /Lean
+nuget restore QuantConnect.Lean.sln
+</code></pre>
+
+<ul>
+<li>Compile your code using the container</li>
+</ul>
+<pre><code>cd /Lean
+msbuild QuantConnect.Lean.sln
+</code></pre>
+
+<ul>
+<li>Run your code using the container</li>
+</ul>
+<pre><code>cd /Lean/Launcher/bin/Debug
+mono QuantConnect.Lean.Launcher.exe
+</code></pre>
+
+<ul>
+<li>
+<p>Run helper script to do nuget restore, compile and run operations together using <code>lean-build-run</code>.</p>
+</li>
+<li>
+<p>If you want to restart a exited <em>lean-env</em> container, use <code>docker start -i $(docker ps -a -q --filter "status=exited" --filter "name=lean-env")</code></p>
+</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script src="./js/theme.js"></script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 0.16.3
+Build Date UTC : 2020-07-12 11:23:42
+-->

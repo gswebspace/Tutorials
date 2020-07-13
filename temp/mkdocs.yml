@@ -3,6 +3,6 @@ site_name: LEAN + Docker
 theme: readthedocs
 
 pages:
-  - "Home" : index.md
+  - Home : index.md
   - "LEAN+Docker+VS Code" : lean-docker-vscode/index.md
   - "LEAN+Docker" : lean-docker.md

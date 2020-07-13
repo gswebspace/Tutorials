@@ -23,7 +23,7 @@ To proceed with the tutorial follow the steps below
     - For linux users, you can use docker as a non-root user by adding your user to the *docker* group by executing `sudo usermod -aG docker $USER`. You will need to reboot to start using docker as your user.
     
     <video width="320" title="Docker installation" controls>
-      <source src="img/lean-docker-install.mp4" type="video/mp4">
+      <source src="/img/lean-docker-install.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     
@@ -72,7 +72,7 @@ CMD ["/bin/bash"]
     `docker run -it --name lean-env lean-env`
     
     <video width="320" title="LEAN container setup" controls>
-      <source src="img/lean-container-setup.mp4" type="video/mp4">
+      <source src="/img/lean-container-setup.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     
@@ -81,7 +81,7 @@ CMD ["/bin/bash"]
     - Install VS Code from instructions [provided here](https://code.visualstudio.com/docs/setup/setup-overview)
       
         <video width="320" title="Installing VS Code" controls>
-          <source src="img/lean-vscode-install.mp4" type="video/mp4">
+          <source src="/img/lean-vscode-install.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       
@@ -141,7 +141,7 @@ CMD ["/bin/bash"]
         - Goto the Run view and select *LEAN* and hit the play icon to start/debug the program.
 
 		<video width="320" title="VS Code Setup" controls>
-			<source src="img/lean-vscode-setup.mp4" type="video/mp4">
+			<source src="/img/lean-vscode-setup.mp4" type="video/mp4">
 			Your browser does not support the video tag.
 		</video>
 
@@ -209,7 +209,7 @@ CMD ["/bin/bash"]
      - In the *DEBUG CONSOLE* you can see the output of the program including various statistics like Total Trades, Average Win, Net Profit etc.
 
 		<video width="320" title="Adding new backtesting algorithm" controls>
-                        <source src="img/lean-my-algo.mp4" type="video/mp4">
+                        <source src="/img/lean-my-algo.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                 </video>
 

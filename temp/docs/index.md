@@ -204,7 +204,7 @@ CMD ["/bin/bash"]
        
      - Build the program by pressing `ctrl+shift+b`. The build command output is available via the TERMINAL for the LEAN Build task.
      
-     - Run to program by selecting Run > LEAN
+     - Run the program by selecting Run > LEAN > Play icon.
      
      - In the *DEBUG CONSOLE* you can see the output of the program including various statistics like Total Trades, Average Win, Net Profit etc.
 
